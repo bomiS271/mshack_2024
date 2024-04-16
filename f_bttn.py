@@ -32,7 +32,7 @@ def ChangeWidgetFontSize(wgt_txt, wch_font_size="12px"):
     st.components.v1.html(f"{htmlstr}", height=0, width=0)
 
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4, col4 = st.columns(4)
 
 with col1:
     st.title("고소미")
@@ -73,13 +73,6 @@ with st.form("complaint"):
     com_submitted = st.form_submit_button("고소인 정보 작성 완료")
 
 
-# knowAccuser = st.radio(label="피고소인 정보를 알고계신가요?", options=["아니요", "예"])
-# st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-# st.markdown(
-#     """<style> div[class*="stRadio"] > label > div[data-testid="stMarkdownContainer"] > p {
-#     font-size: 20px;} </style>
-#     """, unsafe_allow_html=True)
-# if knowAccuser == "예":
 with st.form("accuser"):
     st.write("피고소인의 기본 정보를 수집하겠습니다.")
     acc_name = st.text_input("성명", placeholder="변사또")
@@ -87,6 +80,23 @@ with st.form("accuser"):
     acc_address = st.text_input("주소", placeholder="부산시 사상구 학장동")
     acc_phone = st.text_input("전화번호", placeholder="불 상")
     acc_submitted = st.form_submit_button("피고소인 정보 작성 완료")
+
+with st.form("acc_info"):
+    st.write("사건 정보를 수집하겠습니다.")
+    acc_date = st.date_input("언제 발생하셨나요?")
+    st.markdown(
+        """<style> div[class*="stWidgetLabel"] > label > div[data-testid="stMarkdownContainer"] > p {
+        font-size: 20px;} </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    content = st.text_area(
+        "고소하려는 육하원칙으로 사건에 대해 구체적으로 작성해주세요.",
+        placeholder="""고소인 홍길동은 현재직업이 회사원이고, 피고소인 변사또는 직장동료 입니다. 피고소인 변사또와 2024.04.04 서울 강남구 청담역 근처 술집에서 대화중 말다툼을 하게 되었습니다. 변사또가 갑자기 ‘이새끼야! 머리에 똥만 가득찬 놈! 인생 똑바로 살아! 씨발!이라고 저에게 수차례 욕설을 하여 다른 손님들이 있는 앞에서 큰소리로 저에게 수회 욕을 하여 수치심을 느끼게 했습니다.""",
+    )
+    acc_info_submitted = st.form_submit_button("사건 정보 작성 완료")
+
+
 
 endpoint = "https://last-di-123.cognitiveservices.azure.com/"
 key = "7cb73f8192aa44dc867a8bf284db6f25"
@@ -153,22 +163,8 @@ if img_file_buffer is not None:
     st.write(result1.choices[0].message.content)
 
 
-with st.form("acc_info"):
-    st.write("사건 정보를 수집하겠습니다.")
-    acc_date = st.date_input("언제 발생하셨나요?")
-    st.markdown(
-        """<style> div[class*="stWidgetLabel"] > label > div[data-testid="stMarkdownContainer"] > p {
-        font-size: 20px;} </style>
-        """,
-        unsafe_allow_html=True,
-    )
-    content = st.text_area(
-        "고소하려는 육하원칙으로 사건에 대해 구체적으로 작성해주세요.",
-        placeholder="""고소인 홍길동은 현재직업이 회사원이고, 피고소인 변사또는 직장동료 입니다. 피고소인 변사또와 2024.04.04 서울 강남구 청담역 근처 술집에서 대화중 말다툼을 하게 되었습니다. 변사또가 갑자기 ‘이새끼야! 머리에 똥만 가득찬 놈! 인생 똑바로 살아! 씨발!이라고 저에게 수차례 욕설을 하여 다른 손님들이 있는 앞에서 큰소리로 저에게 수회 욕을 하여 수치심을 느끼게 했습니다.""",
-    )
-    acc_info_submitted = st.form_submit_button("사건 정보 작성 완료")
-
 st.divider()
+
 
 if acc_info_submitted:
     st.markdown(
@@ -192,7 +188,7 @@ if acc_info_submitted:
                 },
                 {
                     "role": "user",
-                    "content": str(result1)
+                    "content": str(result1.choices[0].message.content)
                     + "의 구체적인 욕설과 수치를 반드시 포함해줘.",
                 },
                 {
