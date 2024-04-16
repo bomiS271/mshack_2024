@@ -32,7 +32,7 @@ def ChangeWidgetFontSize(wgt_txt, wch_font_size="12px"):
     st.components.v1.html(f"{htmlstr}", height=0, width=0)
 
 
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.title("고소미")
