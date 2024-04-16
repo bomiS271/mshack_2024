@@ -1,0 +1,10 @@
+docx2pdf
+numpy
+openai
+pandas
+pillow
+python-docx
+streamlit
+streamlit-pdf-viewer
+azure-ai-documentintelligence==1.0.0b2
+azure.core.credentials
